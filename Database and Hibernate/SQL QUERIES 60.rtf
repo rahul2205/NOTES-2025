@@ -1,0 +1,198 @@
+
+CREATE TABLE Employee (
+    emp_id INT,
+    emp_name VARCHAR(50),
+    emp_department VARCHAR(50),
+    emp_salary INT,
+    emp_join_date DATE
+);
+
+-- Inserting sample data into the table
+INSERT INTO Employee (emp_id, emp_name, emp_department, emp_salary, emp_join_date)
+VALUES
+    (1, 'John', 'HR', 50000, '2020-01-01'),
+    (2, 'Jane', 'Marketing', 60000, '2019-05-15'),
+    (3, 'Alice', 'IT', 55000, '2018-10-20'),
+    (4, 'Bob', 'Finance', 70000, '2021-03-10'),
+    (5, 'Carol', 'HR', 48000, '2020-08-05');
+
+-- Query 1: Select all records from the table
+SELECT * FROM Employee;
+
+-- Query 2: Select specific columns (e.g., emp_id, emp_name)
+SELECT emp_id, emp_name FROM Employee;
+
+-- Query 3: Select records where emp_department is 'HR'
+SELECT * FROM Employee WHERE emp_department = 'HR';
+
+-- Query 4: Select records where emp_salary is greater than 55000
+SELECT * FROM Employee WHERE emp_salary > 55000;
+
+-- Query 5: Select records where emp_join_date is in 2020
+SELECT * FROM Employee WHERE YEAR(emp_join_date) = 2020;
+
+-- Query 6: Select distinct departments from the table
+SELECT DISTINCT emp_department FROM Employee;
+
+-- Query 7: Count the number of employees in each department
+SELECT emp_department, COUNT(*) AS num_employees FROM Employee GROUP BY emp_department;
+
+-- Query 8: Calculate the average salary of all employees
+SELECT AVG(emp_salary) AS avg_salary FROM Employee;
+
+-- Query 9: Find the employee with the highest salary
+SELECT * FROM Employee ORDER BY emp_salary DESC LIMIT 1;
+
+-- Query 10: Find the oldest employee (based on join date)
+SELECT * FROM Employee ORDER BY emp_join_date ASC LIMIT 1;
+
+-- Query 11: Select records where emp_name starts with 'J'
+SELECT * FROM Employee WHERE emp_name LIKE 'J%';
+
+-- Query 12: Select records where emp_name contains 'a'
+SELECT * FROM Employee WHERE emp_name LIKE '%a%';
+
+-- Query 13: Select records where emp_salary is between 50000 and 60000
+SELECT * FROM Employee WHERE emp_salary BETWEEN 50000 AND 60000;
+
+-- Query 14: Select records sorted by emp_salary in ascending order
+SELECT * FROM Employee ORDER BY emp_salary ASC;
+
+-- Query 15: Select the second highest salary
+SELECT DISTINCT emp_salary FROM Employee ORDER BY emp_salary DESC LIMIT 1,1;
+
+-- Query 16: Find the total sum of salaries for the Finance department
+SELECT SUM(emp_salary) AS total_salary FROM Employee WHERE emp_department = 'Finance';
+
+-- Query 17: Update employee Bob's salary to 75000
+UPDATE Employee SET emp_salary = 75000 WHERE emp_name = 'Bob';
+
+-- Query 18: Delete employee with emp_id 3
+DELETE FROM Employee WHERE emp_id = 3;
+
+-- Query 19: Find the average salary of employees in each department
+SELECT emp_department, AVG(emp_salary) AS avg_salary FROM Employee GROUP BY emp_department;
+
+-- Query 20: Select employees who joined after 2019 and have a salary greater than 55000
+SELECT * FROM Employee WHERE emp_join_date > '2019-01-01' AND emp_salary > 55000;
+
+-- Query 21: Select the top 3 highest paid employees
+SELECT * FROM Employee ORDER BY emp_salary DESC LIMIT 3;
+
+-- Query 22: Select employees whose names start with 'J' and are from the HR department
+SELECT * FROM Employee WHERE emp_name LIKE 'J%' AND emp_department = 'HR';
+
+-- Query 23: Select the number of employees for each department and order the result by the number of employees in descending order
+SELECT emp_department, COUNT(*) AS num_employees FROM Employee GROUP BY emp_department ORDER BY num_employees DESC;
+
+-- Query 24: Select employees who have joined within the last 6 months
+SELECT * FROM Employee WHERE emp_join_date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH);
+
+-- Query 25: Select employees whose names are not 'John'
+SELECT * FROM Employee WHERE emp_name != 'John';
+
+-- Query 26: Select employees whose salaries are within the top 10% of all salaries
+SELECT * FROM Employee WHERE emp_salary >= (SELECT PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY emp_salary) FROM Employee);
+
+-- Query 27: Select the second highest salary without using LIMIT or OFFSET
+SELECT MAX(emp_salary) AS second_highest_salary FROM Employee WHERE emp_salary < (SELECT MAX(emp_salary) FROM Employee);
+
+-- Query 28: Select the employee with the third-highest salary using a subquery
+SELECT * FROM Employee WHERE emp_salary = (SELECT DISTINCT emp_salary FROM Employee ORDER BY emp_salary DESC LIMIT 2,1);
+
+-- Query 29: Select employees who joined in the year 2020 and have a salary greater than the average salary of all employees
+SELECT * FROM Employee WHERE YEAR(emp_join_date) = 2020 AND emp_salary > (SELECT AVG(emp_salary) FROM Employee);
+
+-- Query 30: Select employees with the same salary and department as employee with emp_id 1
+SELECT * FROM Employee WHERE emp_salary = (SELECT emp_salary FROM Employee WHERE emp_id = 1) AND emp_department = (SELECT emp_department FROM Employee WHERE emp_id = 1);
+
+-- Query 31: Select employees who do not have a department assigned (emp_department is NULL)
+SELECT * FROM Employee WHERE emp_department IS NULL;
+
+-- Query 32: Select employees who have a salary either less than 50000 or greater than 60000
+SELECT * FROM Employee WHERE emp_salary < 50000 OR emp_salary > 60000;
+
+-- Query 33: Select employees whose names are in uppercase
+SELECT * FROM Employee WHERE emp_name = UPPER(emp_name);
+
+-- Query 34: Select employees whose names are more than 4 characters long
+SELECT * FROM Employee WHERE LENGTH(emp_name) > 4;
+
+-- Query 35: Select employees whose names start with a vowel
+SELECT * FROM Employee WHERE emp_name REGEXP '^[aeiouAEIOU].*';
+
+-- Query 36: Select employees whose names end with a consonant
+SELECT * FROM Employee WHERE emp_name REGEXP '[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]$';
+
+-- Query 37: Select employees whose names contain exactly 4 characters
+SELECT * FROM Employee WHERE LENGTH(emp_name) = 4;
+
+-- Query 38: Select employees who joined on the first day of any month
+SELECT * FROM Employee WHERE DAY(emp_join_date) = 1;
+
+-- Query 39: Select employees whose names have exactly 4 characters and start with 'J'
+SELECT * FROM Employee WHERE emp_name LIKE 'J__';
+
+-- Query 40: Select employees whose names start with 'A' or 'B'
+SELECT * FROM Employee WHERE emp_name LIKE 'A%' OR emp_name LIKE 'B%';
+
+-- Query 41: Select employees whose names contain 'a' but do not start with 'A'
+SELECT * FROM Employee WHERE emp_name LIKE '%a%' AND emp_name NOT LIKE 'A%';
+
+-- Query 42: Select employees whose names contain more 'a's than 'e's
+SELECT * FROM Employee WHERE LENGTH(REPLACE(emp_name, 'e', '')) < LENGTH(REPLACE(emp_name, 'a', ''));
+
+-- Query 43: Select employees whose names are palindrome (reads the same forwards and backward)
+SELECT * FROM Employee WHERE emp_name = REVERSE(emp_name);
+
+-- Query 44: Select employees whose names are alphabetically ordered
+SELECT * FROM Employee ORDER BY emp_name;
+
+-- Query 45: Select employees whose names have duplicate letters
+SELECT * FROM Employee WHERE emp_name REGEXP '(.)1';
+
+-- Query 46: Select employees whose names have no repeating letters
+SELECT * FROM Employee WHERE emp_name NOT REGEXP '(.)1';
+
+-- Query 47: Select employees whose names have exactly 3 letters
+SELECT * FROM Employee WHERE LENGTH(emp_name) = 3;
+
+-- Query 48: Select employees whose names have at least 5 letters
+SELECT * FROM Employee WHERE LENGTH(emp_name) >= 5;
+
+-- Query 49: Select employees whose names start with a capital letter
+SELECT * FROM Employee WHERE emp_name REGEXP '^[A-Z]';
+
+-- Query 50: Select employees whose names have all letters in lowercase
+SELECT * FROM Employee WHERE emp_name = LOWER(emp_name);
+
+-- Query 51: Select employees whose names have all letters in uppercase
+SELECT * FROM Employee WHERE emp_name = UPPER(emp_name);
+
+-- Query 52: Select employees whose names have more vowels than consonants
+SELECT * FROM Employee WHERE LENGTH(emp_name) - LENGTH(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(emp_name, 'a', ''), 'e', ''), 'i', ''), 'o', ''), 'u', '')) > LENGTH(emp_name) / 2;
+
+-- Query 53: Select employees whose names have more consonants than vowels
+SELECT * FROM Employee WHERE LENGTH(emp_name) - LENGTH(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(emp_name, 'b', ''), 'c', ''), 'd', ''), 'f', ''), 'g', '')) > LENGTH(emp_name) / 2;
+
+-- Query 54: Select employees whose names have an odd number of letters
+SELECT * FROM Employee WHERE LENGTH(emp_name) % 2 = 1;
+
+-- Query 55: Select employees whose names have an even number of letters
+SELECT * FROM Employee WHERE LENGTH(emp_name) % 2 = 0;
+
+-- Query 56: Select employees whose names have a prime number of letters
+SELECT * FROM Employee WHERE LENGTH(emp_name) IN (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59);
+
+-- Query 57: Select employees whose names contain an even number of vowels
+SELECT * FROM Employee WHERE LENGTH(emp_name) - LENGTH(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(emp_name, 'a', ''), 'e', ''), 'i', ''), 'o', ''), 'u', '')) % 2 = 0;
+
+-- Query 58: Select employees whose names contain an odd number of vowels
+SELECT * FROM Employee WHERE LENGTH(emp_name) - LENGTH(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(emp_name, 'a', ''), 'e', ''), 'i', ''), 'o', ''), 'u', '')) % 2 = 1;
+
+-- Query 59: Select employees whose names have the same number of vowels as consonants
+SELECT * FROM Employee WHERE LENGTH(emp_name) - LENGTH(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(emp_name, 'a', ''), 'e', ''), 'i', ''), 'o', ''), 'u', '')) = LENGTH(emp_name) / 2;
+
+-- Query 60: Select employees whose names have a different number of vowels than consonants
+SELECT * FROM Employee WHERE LENGTH(emp_name) - LENGTH(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(emp_name, 'a', ''), 'e', ''), 'i', ''), 'o', ''), 'u', '')) != LENGTH(emp_name) / 2;
+}
